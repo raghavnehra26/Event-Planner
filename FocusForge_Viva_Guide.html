@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>FocusForge: Habit & Deep Work Engine - Viva & Technical Project Defense Guide</title>
+<style>
+  @page {
+    size: A4;
+    margin: 18mm 16mm 18mm 16mm;
+  }
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #1f2937;
+    background-color: #ffffff;
+    line-height: 1.55;
+    font-size: 13.5px;
+    margin: 0;
+    padding: 0;
+  }
+  h1, h2, h3, h4 {
+    color: #0f172a;
+    font-weight: 700;
+    margin-top: 24px;
+    margin-bottom: 10px;
+    page-break-after: avoid;
+  }
+  h1 {
+    font-size: 24px;
+    border-bottom: 2px solid #00E676;
+    padding-bottom: 8px;
+    margin-top: 0;
+  }
+  h2 {
+    font-size: 18px;
+    color: #047857;
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 6px;
+    margin-top: 28px;
+  }
+  h3 {
+    font-size: 15px;
+    color: #1e293b;
+    margin-top: 18px;
+  }
+  p {
+    margin: 6px 0 10px 0;
+  }
+  ul, ol {
+    margin: 6px 0 12px 20px;
+    padding: 0;
+  }
+  li {
+    margin-bottom: 4px;
+  }
+  .header-card {
+    background: linear-gradient(135deg, #0d1117 0%, #161b22 100%);
+    color: #ffffff;
+    padding: 20px 24px;
+    border-radius: 10px;
+    margin-bottom: 24px;
+    border-left: 6px solid #00E676;
+  }
+  .header-card h1 {
+    color: #ffffff;
+    border: none;
+    margin: 0 0 6px 0;
+    font-size: 26px;
+  }
+  .header-card .tagline {
+    color: #00E676;
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0 0 10px 0;
+  }
+  .header-card .meta {
+    color: #9ca3af;
+    font-size: 12px;
+    display: flex;
+    gap: 20px;
+  }
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .badge-green { background: #dcfce7; color: #15803d; }
+  .badge-blue { background: #e0f2fe; color: #0369a1; }
+  .badge-amber { background: #fef3c7; color: #b45309; }
+  .badge-purple { background: #f3e8ff; color: #7e22ce; }
+  
+  .speech-box {
+    background: #f0fdf4;
+    border: 1.5px solid #86efac;
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 12px 0 18px 0;
+    page-break-inside: avoid;
+  }
+  .speech-box .label {
+    font-weight: 700;
+    color: #166534;
+    font-size: 12px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .speech-box p {
+    font-style: italic;
+    color: #14532d;
+    margin: 0;
+    font-size: 14px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 14px 0 18px 0;
+    font-size: 12.5px;
+    page-break-inside: avoid;
+  }
+  th, td {
+    padding: 8px 12px;
+    border: 1px solid #e5e7eb;
+    text-align: left;
+  }
+  th {
+    background-color: #f8fafc;
+    color: #0f172a;
+    font-weight: 700;
+  }
+  tr:nth-child(even) {
+    background-color: #f9fafb;
+  }
+
+  pre {
+    background: #0d1117;
+    color: #e6edf3;
+    padding: 12px 14px;
+    border-radius: 6px;
+    font-family: "JetBrains Mono", Consolas, "Courier New", monospace;
+    font-size: 11.5px;
+    overflow-x: auto;
+    line-height: 1.45;
+    margin: 8px 0 14px 0;
+    border: 1px solid #30363d;
+    page-break-inside: avoid;
+  }
+  code {
+    font-family: Consolas, "Courier New", monospace;
+    background: #f1f5f9;
+    color: #0f172a;
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-size: 12px;
+  }
+  pre code {
+    background: transparent;
+    color: inherit;
+    padding: 0;
+  }
+
+  .qa-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-left: 4px solid #2563eb;
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin-bottom: 12px;
+    page-break-inside: avoid;
+  }
+  .qa-card.accent {
+    border-left-color: #00E676;
+  }
+  .qa-card.warning {
+    border-left-color: #f59e0b;
+  }
+  .qa-q {
+    font-weight: 700;
+    color: #0f172a;
+    font-size: 13.5px;
+    margin-bottom: 6px;
+  }
+  .qa-a {
+    color: #334155;
+    margin: 0;
+  }
+  .page-break {
+    page-break-before: always;
+  }
+  .comment { color: #8b949e; }
+  .keyword { color: #ff7b72; font-weight: bold; }
+  .string { color: #a5d6ff; }
+  .func { color: #d2a8ff; }
+  .type { color: #79c0ff; }
+</style>
+</head>
+<body>
+
+<!-- COVER / HEADER -->
+<div class="header-card">
+  <h1>FocusForge: Habit & Deep Work Engine</h1>
+  <div class="tagline">Production-Ready Android Utility App — Comprehensive Viva Defense & Architecture Guide</div>
+  <div class="meta">
+    <span><strong>Platform:</strong> 100% Kotlin | Android SDK 34</span>
+    <span><strong>UI Framework:</strong> Jetpack Compose + Material 3</span>
+    <span><strong>Architecture:</strong> Clean Architecture + MVVM</span>
+    <span><strong>Storage:</strong> Room (SQLite) + DataStore (100% Offline)</span>
+  </div>
+</div>
+
+<!-- SECTION 1 -->
+<h2>1. Executive Summary & 30-Second Elevator Pitch</h2>
+<p>
+  When an examiner or interviewer asks: <em>"Tell me about your project in simple words — what does it do and why did you build it?"</em>, use the exact conversational script below.
+</p>
+
+<div class="speech-box">
+  <div class="label">Your 30-Second Viva Answer (Memorize This)</div>
+  <p>
+    "FocusForge is a high-performance, distraction-free Android productivity engine that combines habit streak tracking with custom Pomodoro focus timers and GitHub-style contribution heatmaps. Unlike typical productivity apps that force account sign-ups, store personal data on remote servers, and drain battery with sync loops, FocusForge is 100% offline-first using a local Room SQLite database with zero server costs. It is built in 100% Kotlin using modern Jetpack Compose and Clean Architecture (MVVM). It also includes a production-ready hybrid monetization engine with Google Play Billing v7 and AdMob rewarded ads."
+  </p>
+</div>
+
+<h3>Key Problems in Existing Apps vs. Our Solution</h3>
+<table>
+  <thead>
+    <tr>
+      <th style="width: 25%;">Problem in Market</th>
+      <th style="width: 35%;">Why It Sucks for Users</th>
+      <th style="width: 40%;">How FocusForge Solves It</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Forced Cloud Accounts</strong></td>
+      <td>Requires email, Google login, or phone number before using simple features.</td>
+      <td><strong>Zero Sign-Up:</strong> Instant launch directly into habit setup. Zero cloud dependencies.</td>
+    </tr>
+    <tr>
+      <td><strong>Privacy Invasions</strong></td>
+      <td>Habits, workout schedules, and journals get stored on remote servers.</td>
+      <td><strong>100% Offline-First:</strong> All records remain strictly inside the device's encrypted Room database.</td>
+    </tr>
+    <tr>
+      <td><strong>Clunky Visuals</strong></td>
+      <td>Boring checklists or generic calendar dots.</td>
+      <td><strong>Git-Style Heatmaps:</strong> High-contrast GitHub-style 52-week green contribution matrix.</td>
+    </tr>
+    <tr>
+      <td><strong>Timer Drops in Background</strong></td>
+      <td>Countdown timer gets killed by Android OS when screen turns off.</td>
+      <td><strong>Foreground Service:</strong> Persistent low-overhead ticker service with lock-screen notification controls.</td>
+    </tr>
+    <tr>
+      <td><strong>Aggressive Ads</strong></td>
+      <td>Pop-up interstitial ads interrupting users mid-session.</td>
+      <td><strong>Clean Freemium:</strong> Free tier (up to 3 habits), Rewarded Video to unlock 24h Pro, and Play Billing for Pro.</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- SECTION 2 -->
+<div class="page-break"></div>
+<h2>2. Complete Technology Stack & "Why We Used It"</h2>
+<p>
+  Examiners frequently ask: <em>"Why did you choose library X instead of library Y?"</em>. Here is the exact technical justification for every tool in the codebase:
+</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="width: 22%;">Technology</th>
+      <th style="width: 33%;">What We Used</th>
+      <th style="width: 45%;">Why We Chose It (Viva Defense)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Programming Language</strong></td>
+      <td><strong>Kotlin 2.0+</strong></td>
+      <td>First-class Android language. Guarantees null safety (eliminates <code>NullPointerException</code>), supports coroutines for effortless asynchronous tasks, and concise syntax.</td>
+    </tr>
+    <tr>
+      <td><strong>User Interface</strong></td>
+      <td><strong>Jetpack Compose + Material 3</strong></td>
+      <td>Modern declarative UI toolkit. Replaces legacy XML layouts. Screens re-render automatically when state changes (Recomposition). Less boilerplate, dark-theme default, and smooth 60fps animations.</td>
+    </tr>
+    <tr>
+      <td><strong>Architectural Pattern</strong></td>
+      <td><strong>Clean Architecture + MVVM</strong></td>
+      <td>Enforces Separation of Concerns. View (Compose) observes ViewModel via <code>StateFlow</code>; ViewModel coordinates Repositories; Repositories access Room DAOs. Makes code testable and maintainable.</td>
+    </tr>
+    <tr>
+      <td><strong>Local Database</strong></td>
+      <td><strong>Room Database (SQLite) v2.6.1</strong></td>
+      <td>Google's official ORM over raw SQLite. Provides compile-time verification of SQL queries, zero runtime syntax crashes, and returns reactive <code>Flow&lt;List&lt;T&gt;&gt;</code> directly to ViewModels.</td>
+    </tr>
+    <tr>
+      <td><strong>Key-Value Preferences</strong></td>
+      <td><strong>Jetpack DataStore Preferences</strong></td>
+      <td>Modern asynchronous replacement for <code>SharedPreferences</code>. Runs on Kotlin Coroutines & Dispatchers.IO, preventing UI freezes (ANR - Application Not Responding) caused by synchronous disk I/O.</td>
+    </tr>
+    <tr>
+      <td><strong>Dependency Injection</strong></td>
+      <td><strong>Dagger Hilt v2.51.1</strong></td>
+      <td>Standard DI framework built on top of Dagger. Generates compile-time dependency graphs. Injects DAOs, repositories, and sound managers automatically into ViewModels with <code>@Inject</code>.</td>
+    </tr>
+    <tr>
+      <td><strong>Background Tasks</strong></td>
+      <td><strong>Foreground Service + WorkManager</strong></td>
+      <td><strong>Foreground Service</strong> maintains active Pomodoro timer countdown with notification while app is minimized. <strong>WorkManager</strong> schedules guaranteed, battery-friendly evening streak reminder notifications.</td>
+    </tr>
+    <tr>
+      <td><strong>Monetization</strong></td>
+      <td><strong>Google Play Billing v7+ & AdMob</strong></td>
+      <td>Play Billing v7 implements in-app purchases (Lifetime $19.99) & subscriptions (Monthly $3.99). Google Mobile Ads SDK serves non-intrusive banners and rewarded video ads.</td>
+    </tr>
+    <tr>
+      <td><strong>Store Optimization</strong></td>
+      <td><strong>Play In-App Review API</strong></td>
+      <td>Automatically triggers Google's in-app rating dialog after the user logs their 5th focus session, maximizing 5-star organic Play Store rankings without leaving the app.</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- SECTION 3 -->
+<h2>3. Architecture Diagram & Data Flow</h2>
+<p>
+  Here is the flow of data across the 3 layers (Presentation, Domain, Data):
+</p>
+
+<pre>
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│                                PRESENTATION LAYER (UI)                                  │
+│  Jetpack Compose Screens: DashboardScreen, TimerScreen, AnalyticsScreen, PaywallScreen  │
+│  State Management: ViewModels exposing StateFlow&lt;UiState&gt;                              │
+└───────────────────────────────────────────▲────────────────────────────────────────────┘
+                                            │ State Flow (Observing) / Events (User Taps)
+┌───────────────────────────────────────────▼────────────────────────────────────────────┐
+│                                     DOMAIN LAYER                                       │
+│  Pure Kotlin Business Models: Habit, FocusSession, HeatmapDay, UserTier, TierLimits    │
+│  Repository Interfaces: HabitRepository, FocusSessionRepository                        │
+└───────────────────────────────────────────▲────────────────────────────────────────────┘
+                                            │ Coroutines (Dispatchers.IO)
+┌───────────────────────────────────────────▼────────────────────────────────────────────┐
+│                                  DATA LAYER (STORAGE)                                  │
+│  Implementations: HabitRepositoryImpl, FocusSessionRepositoryImpl, UserPreferencesRepo │
+│  Local SQLite: Room Database (habits table, daily_logs table, focus_sessions table)    │
+│  Device Storage: DataStore Preferences (pro status, audio toggles, session counts)     │
+└────────────────────────────────────────────────────────────────────────────────────────┘
+</pre>
+
+<!-- SECTION 4 -->
+<div class="page-break"></div>
+<h2>4. Critical Code Modules Explained in Plain English</h2>
+<p>
+  Examiners often ask you to open specific files and explain the code line-by-line. Below are the 6 most important code blocks in this project.
+</p>
+
+<h3>Code Block 1: Room Database Entity & DAO (<small>HabitEntity.kt & HabitDao.kt</small>)</h3>
+<p><strong>What it does:</strong> Defines the table schema for habits in SQLite and provides database queries with reactive Kotlin Flow.</p>
+
+<pre><code><span class="comment">// 1. Entity defines the SQL table structure</span>
+<span class="keyword">@Entity</span>(tableName = <span class="string">"habits"</span>)
+<span class="keyword">data class</span> <span class="type">HabitEntity</span>(
+    <span class="keyword">@PrimaryKey</span>(autoGenerate = <span class="keyword">true</span>) <span class="keyword">val</span> id: <span class="type">Long</span> = 0,
+    <span class="keyword">val</span> name: <span class="type">String</span>,
+    <span class="keyword">val</span> category: <span class="type">String</span>,
+    <span class="keyword">val</span> currentStreak: <span class="type">Int</span> = 0,
+    <span class="keyword">val</span> longestStreak: <span class="type">Int</span> = 0,
+    <span class="keyword">val</span> isArchived: <span class="type">Boolean</span> = <span class="keyword">false</span>
+)
+
+<span class="comment">// 2. DAO provides compile-time verified SQL queries returning Flow</span>
+<span class="keyword">@Dao</span>
+<span class="keyword">interface</span> <span class="type">HabitDao</span> {
+    <span class="keyword">@Query</span>(<span class="string">"SELECT * FROM habits WHERE isArchived = 0 ORDER BY createdAt DESC"</span>)
+    <span class="keyword">fun</span> <span class="func">getAllActiveHabits</span>(): <span class="type">Flow</span>&lt;<span class="type">List</span>&lt;<span class="type">HabitEntity</span>&gt;&gt;
+
+    <span class="keyword">@Insert</span>(onConflict = <span class="type">OnConflictStrategy</span>.<span class="type">REPLACE</span>)
+    <span class="keyword">suspend fun</span> <span class="func">insertHabit</span>(habit: <span class="type">HabitEntity</span>): <span class="type">Long</span>
+}</code></pre>
+<p><strong>Viva Explanation:</strong> "The <code>@Entity</code> annotation tells Room to create a SQLite table called <code>habits</code>. The DAO returns a reactive Kotlin <code>Flow</code>. Whenever any habit is inserted, toggled, or deleted, Room automatically emits the updated list down the Flow directly to the Compose UI without having to write manual refresh queries."</p>
+
+<h3>Code Block 2: Consecutive Streak Calculation Algorithm (<small>HabitRepositoryImpl.kt</small>)</h3>
+<p><strong>What it does:</strong> Dynamically calculates the current consecutive daily streak and all-time longest streak.</p>
+
+<pre><code><span class="keyword">private suspend fun</span> <span class="func">recalculateHabitStreaks</span>(habitId: <span class="type">Long</span>) {
+    <span class="keyword">val</span> dates = habitDao.getLogDatesForHabit(habitId).map { DateUtils.parseDate(it) }.distinct().sorted()
+    <span class="keyword">val</span> today = LocalDate.now()
+    <span class="keyword">val</span> yesterday = today.minusDays(1)
+
+    <span class="comment">// Streak is active if user completed today OR yesterday (grace period)</span>
+    <span class="keyword">var</span> currentStreak = 0
+    <span class="keyword">var</span> checkDate = <span class="keyword">if</span> (dates.contains(today)) today <span class="keyword">else</span> yesterday
+
+    <span class="keyword">while</span> (dates.contains(checkDate)) {
+        currentStreak++
+        checkDate = checkDate.minusDays(1) <span class="comment">// Walk backwards day-by-day</span>
+    }
+    habitDao.updateHabit(habitEntity.copy(currentStreak = currentStreak))
+}</code></pre>
+<p><strong>Viva Explanation:</strong> "To calculate the streak, we fetch all logged completion dates for this habit. We check if the user completed the habit today; if not yet, we check yesterday so the streak isn't wiped out before the day ends. Then a while-loop walks backwards day-by-day checking the date set. As soon as a date is missing, the loop terminates and we store the exact consecutive count."</p>
+
+<h3>Code Block 3: Timer Foreground Service (<small>TimerService.kt</small>)</h3>
+<p><strong>What it does:</strong> Ensures the Pomodoro timer continues counting down accurately even if the user minimizes the app or locks their phone.</p>
+
+<pre><code><span class="keyword">fun</span> <span class="func">startTimer</span>() {
+    _isRunning.value = <span class="keyword">true</span>
+    <span class="comment">// 1. Promote to Foreground Service with ongoing notification</span>
+    <span class="keyword">val</span> notification = notificationManager.buildTimerNotification(timeFormatted, modeTitle, isRunning = <span class="keyword">true</span>)
+    startForeground(FocusNotificationManager.NOTIFICATION_ID_TIMER, notification)
+
+    <span class="comment">// 2. Non-blocking coroutine loop on Main dispatcher</span>
+    timerJob = scope.launch {
+        <span class="keyword">while</span> (_isRunning.value &amp;&amp; _remainingSeconds.value &gt; 0) {
+            delay(1000)
+            _remainingSeconds.value -= 1
+            <span class="comment">// Update persistent notification text</span>
+            updateNotification(_remainingSeconds.value)
+        }
+    }
+}</code></pre>
+<p><strong>Viva Explanation:</strong> "Standard background threads get killed by Android's Doze Mode to conserve battery. By invoking <code>startForeground()</code> with a persistent notification channel, the Android OS grants high execution priority to our timer so it will never freeze when the screen turns off."</p>
+
+<!-- SECTION 5 -->
+<div class="page-break"></div>
+<h2>5. Top 15 Viva Questions & Model Answers</h2>
+<p>
+  Here are the most frequently asked viva and technical interview questions for modern Android applications, with clear, high-scoring answers.
+</p>
+
+<div class="qa-card accent">
+  <div class="qa-q">Q1: What is MVVM and why did you use it instead of putting code in MainActivity?</div>
+  <div class="qa-a">
+    <strong>Answer:</strong> MVVM stands for Model-View-ViewModel. The <strong>View</strong> (Jetpack Compose) handles only UI rendering; the <strong>ViewModel</strong> holds business logic and screen state surviving configuration changes (like screen rotation); and the <strong>Model</strong> (Room & Repositories) manages raw data. If we put everything in <code>MainActivity</code>, rotating the screen would re-create the Activity and destroy our timer state or restart network/database queries.
+  </div>
+</div>
+
+<div class="qa-card accent">
+  <div class="qa-q">Q2: What is Jetpack Compose Recomposition and how does it work?</div>
+  <div class="qa-a">
+    <strong>Answer:</strong> Recomposition is the process where Jetpack Compose re-executes composable functions when their observed state changes. For example, when <code>remainingSeconds</code> changes in <code>TimerViewModel</code>, Compose does not redraw the whole screen; it intelligently skips unchanged composables and only updates the digital clock numbers and the circular progress arc.
+  </div>
+</div>
+
+<div class="qa-card">
+  <div class="qa-q">Q3: What is the difference between Kotlin Coroutines and standard Java Threads?</div>
+  <div class="qa-a">
+    <strong>Answer:</strong> Threads are heavy OS-level resources requiring ~1MB of memory each. Coroutines are "lightweight threads" managed in user-space by the Kotlin runtime. Thousands of coroutines can run concurrently on a single OS thread pool. Coroutines provide non-blocking asynchronous code using <code>suspend</code> functions without callback hell.
+  </div>
+</div>
+
+<div class="qa-card">
+  <div class="qa-q">Q4: What is StateFlow vs SharedFlow vs LiveData?</div>
+  <div class="qa-a">
+    <strong>Answer:</strong> 
+    <ul>
+      <li><strong>StateFlow:</strong> A state-holder observable flow that always holds and emits the latest state to new collectors (used for our UI state in ViewModels).</li>
+      <li><strong>SharedFlow:</strong> An event emitter that does not retain state; perfect for one-time events like showing a Toast or navigating to Paywall.</li>
+      <li><strong>LiveData:</strong> Legacy AndroidX component. <code>StateFlow</code> is superior because it is pure Kotlin, multiplatform-friendly, and integrates seamlessly with Flow operators (<code>map</code>, <code>combine</code>, <code>filter</code>).</li>
+    </ul>
+  </div>
+</div>
+
+<div class="qa-card warning">
+  <div class="qa-q">Q5: Why did you use Room Database instead of SQLiteOpenHelper?</div>
+  <div class="qa-a">
+    <strong>Answer:</strong> Raw <code>SQLiteOpenHelper</code> requires writing error-prone SQL strings and manual Cursor parsing. Room provides <strong>compile-time validation</strong> of queries (if you misspell a column name, the project fails at compile time, not runtime), eliminates repetitive boilerplate code, and supports direct reactive Kotlin <code>Flow</code> emissions.
+  </div>
+</div>
+
+<div class="qa-card warning">
+  <div class="qa-q">Q6: Why is Jetpack DataStore better than SharedPreferences?</div>
+  <div class="qa-a">
+    <strong>Answer:</strong> <code>SharedPreferences</code> uses synchronous disk I/O on the UI thread when calling <code>commit()</code>, which can cause frame drops and ANR (Application Not Responding) crashes. <code>DataStore</code> is fully asynchronous, runs safely on <code>Dispatchers.IO</code> via Coroutines and Flow, and guarantees transactional data consistency.
+  </div>
+</div>
+
+<div class="qa-card accent">
+  <div class="qa-q">Q7: What is Dependency Injection and why Dagger Hilt?</div>
+  <div class="qa-a">
+    <strong>Answer:</strong> Dependency Injection (DI) means a class receives its dependencies from an external source rather than creating them itself (inversion of control). Hilt is Google's official Android DI framework built on top of Dagger. It automatically manages component lifecycles (Singleton, ViewModelScoped) and injects repositories into ViewModels cleanly using <code>@Inject</code>.
+  </div>
+</div>
+
+<div class="qa-card">
+  <div class="qa-q">Q8: What is the difference between WorkManager and a Foreground Service?</div>
+  <div class="qa-a">
+    <strong>Answer:</strong> 
+    <ul>
+      <li><strong>Foreground Service:</strong> Used when immediate, active user awareness is required (e.g. our Pomodoro countdown ticker), showing a persistent notification while running.</li>
+      <li><strong>WorkManager:</strong> Used for deferrable, guaranteed background work that must execute even if the app process is terminated or the device reboots (e.g., our daily evening streak reminder worker <code>StreakReminderWorker</code>).</li>
+    </ul>
+  </div>
+</div>
+
+<div class="qa-card">
+  <div class="qa-q">Q9: How does the Google Play Billing Library v7 prevent double purchases?</div>
+  <div class="qa-a">
+    <strong>Answer:</strong> In Google Play Billing v7, once a purchase is successful, the app must explicitly call <code>billingClient.acknowledgePurchase()</code> within 3 days. If the app fails to acknowledge the purchase, Google Play automatically refunds the user's money and revokes the entitlement, ensuring fraud-free transactions.
+  </div>
+</div>
+
+<div class="qa-card accent">
+  <div class="qa-q">Q10: How does the Git-Style Heatmap calculate color intensity?</div>
+  <div class="qa-a">
+    <strong>Answer:</strong> In <code>HabitRepositoryImpl.kt</code>, we query daily habit completion logs and focus session minutes. We calculate an activity score (1 habit completion = 1 point; 25 mins focus = 1 point). We normalize each day's activity against the maximum activity in that cycle to compute an intensity float from <code>0.0f</code> to <code>1.0f</code>, mapping to 5 distinct GitHub green levels (<code>HeatmapLevel0</code> to <code>HeatmapLevel4</code>).
+  </div>
+</div>
+
+<div class="qa-card warning">
+  <div class="qa-q">Q11: How is the app strictly offline-first with zero server costs?</div>
+  <div class="qa-a">
+    <strong>Answer:</strong> FocusForge uses zero backend servers (no AWS, Firebase, or Node.js). Everything is saved to the local Room database and DataStore on the user's phone. This means 100% data privacy for the user, instant offline speed without loading spinners, and \$0 server infrastructure costs for the owner.
+  </div>
+</div>
+
+<div class="qa-card">
+  <div class="qa-q">Q12: What does ProGuard / R8 do in release builds?</div>
+  <div class="qa-a">
+    <strong>Answer:</strong> R8 performs three critical optimizations on release builds:
+    <ol>
+      <li><strong>Shrinking:</strong> Detects and removes unused classes, methods, and resources, drastically reducing APK/.AAB size.</li>
+      <li><strong>Optimization:</strong> Inlines code and removes dead branches.</li>
+      <li><strong>Obfuscation:</strong> Renames classes and methods to short unreadable names (e.g., <code>a</code>, <code>b</code>) to protect proprietary business logic against reverse engineering.</li>
+    </ol>
+  </div>
+</div>
+
+<div class="qa-card">
+  <div class="qa-q">Q13: How does the Google Play In-App Review API trigger?</div>
+  <div class="qa-a">
+    <strong>Answer:</strong> In <code>PlayReviewManager.kt</code>, we track <code>completedSessionsCount</code> in DataStore. When the counter reaches 5, the review manager calls <code>reviewManager.requestReviewFlow()</code> and launches the rating sheet inside the app. We then save <code>hasReviewedApp = true</code> so the user is never prompted again.
+  </div>
+</div>
+
+<div class="qa-card accent">
+  <div class="qa-q">Q14: How does data export work without an external server?</div>
+  <div class="qa-a">
+    <strong>Answer:</strong> In <code>Exporter.kt</code>, we serialize the Room database tables to JSON (via Gson) or standard CSV format. We save this file into the app's secure cache directory and expose it using an Android <code>FileProvider</code>. We then trigger Android's native <code>Intent.ACTION_SEND</code> Share Sheet, allowing users to email the file or save it directly to Google Drive.
+  </div>
+</div>
+
+<div class="qa-card">
+  <div class="qa-q">Q15: How did you verify and unit test your code?</div>
+  <div class="qa-a">
+    <strong>Answer:</strong> We wrote automated unit tests in <code>DateUtilsTest.kt</code> using JUnit 4. We tested regex validation of date strings (<code>yyyy-MM-dd</code>), seconds-to-timer conversion (e.g. 1500s = <code>25:00</code>), and past interval day list generation (7-day and 365-day arrays). All test suites passed cleanly with 100% accuracy.
+  </div>
+</div>
+
+<!-- SECTION 6 -->
+<div class="page-break"></div>
+<h2>6. Viva Quick-Reference Cheat Sheet (Key Terms)</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="width: 25%;">Term</th>
+      <th style="width: 75%;">One-Sentence Definition</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>@Composable</code></td>
+      <td>A Kotlin annotation marking a function as a declarative UI component that can be rendered by the Compose compiler.</td>
+    </tr>
+    <tr>
+      <td><code>remember { }</code></td>
+      <td>Caches an object in memory during initial composition so it survives across recompositions without being recreated.</td>
+    </tr>
+    <tr>
+      <td><code>suspend fun</code></td>
+      <td>A function that can pause execution of a coroutine without blocking the underlying thread, and resume later.</td>
+    </tr>
+    <tr>
+      <td><code>Dispatchers.IO</code></td>
+      <td>A coroutine dispatcher optimized for disk reading/writing, database queries, and network calls off the main UI thread.</td>
+    </tr>
+    <tr>
+      <td><code>@HiltAndroidApp</code></td>
+      <td>Triggers Hilt's code generation, creating the top-level application dependency container.</td>
+    </tr>
+    <tr>
+      <td><code>NotificationChannel</code></td>
+      <td>Required on Android 8.0 (API 26) and higher; groups notifications by topic so users can customize alert behavior.</td>
+    </tr>
+    <tr>
+      <td><code>FileProvider</code></td>
+      <td>A special subclass of <code>ContentProvider</code> that facilitates secure sharing of app-private files via <code>content://</code> URIs instead of risky <code>file://</code> paths.</td>
+    </tr>
+    <tr>
+      <td><code>AAB (App Bundle)</code></td>
+      <td>Google Play's official publishing format that generates optimized, device-specific APKs tailored to each user's CPU and screen density.</td>
+    </tr>
+  </tbody>
+</table>
+
+<div style="margin-top: 30px; text-align: center; color: #64748b; font-size: 11px; border-top: 1px solid #e2e8f0; padding-top: 12px;">
+  FocusForge: Habit & Deep Work Engine • Autonomous Architecture Project Defense Guide • 100% Kotlin & Jetpack Compose
+</div>
+
+</body>
+</html>

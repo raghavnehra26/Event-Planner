@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dark Mode First Palette -->
+    <color name="primary_accent">#00E676</color> <!-- Neon Emerald -->
+    <color name="primary_variant">#00B248</color>
+    <color name="secondary_accent">#FFAB00</color> <!-- Amber Accent -->
+    <color name="background_dark">#0D1117</color> <!-- GitHub/Deep Dark -->
+    <color name="surface_dark">#161B22</color>
+    <color name="surface_variant_dark">#21262D</color>
+    <color name="text_primary">#F0F6FC</color>
+    <color name="text_secondary">#8B949E</color>
+    <color name="border_dark">#30363D</color>
+    <color name="streak_fire">#FF6D00</color>
+    <color name="error_red">#FF5252</color>
+</resources>

@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">FocusForge</string>
+    <string name="app_tagline">Habit &amp; Deep Work Engine</string>
+    <string name="notification_channel_timer">FocusForge Timer</string>
+    <string name="notification_channel_timer_desc">Active Pomodoro session status and controls</string>
+    <string name="notification_channel_reminders">Streak &amp; Habit Reminders</string>
+    <string name="notification_channel_reminders_desc">Daily reminders to maintain your habit streaks</string>
+</resources>

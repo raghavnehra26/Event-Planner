@@ -1,0 +1,220 @@
+================================================================================
+FOCUSFORGE: HABIT & DEEP WORK ENGINE
+VIVA & TECHNICAL PROJECT DEFENSE GUIDE (EASY-TO-READ EDITION)
+================================================================================
+
+Platform:       100% Kotlin | Android SDK 34 (Android 14)
+UI Framework:   Jetpack Compose with Material 3 (Dark Theme First)
+Architecture:   Clean Architecture + MVVM (Model-View-ViewModel)
+Database:       Room Database (SQLite) + Jetpack DataStore (100% Offline)
+Background:     Foreground Service (Timer) + WorkManager (Streak Reminders)
+Monetization:   Google Play Billing v7+ & AdMob (Banner + Rewarded Video)
+
+--------------------------------------------------------------------------------
+1. THE 30-SECOND ELEVATOR PITCH (WHAT TO SAY IN FRONT OF EXAMINER)
+--------------------------------------------------------------------------------
+
+"Sir / Ma'am, my project is FocusForge: Habit & Deep Work Engine - a distraction-free 
+Android productivity app designed for developers, students, and fitness enthusiasts.
+
+It combines two powerful productivity techniques: Daily Habit Streak Tracking 
+(visualized using GitHub-style contribution heatmaps) and a Custom Pomodoro Deep 
+Work Timer that runs reliably in the background using an Android Foreground Service.
+
+The key differentiator is that FocusForge is strictly 100% offline-first. Unlike 
+apps like Notion or Habitica that force account sign-ups, sell user data, and fail 
+when there is no internet, FocusForge stores all data locally in a high-speed SQLite 
+database via Room with zero server infrastructure costs.
+
+The app is built with 100% Kotlin, modern Jetpack Compose for the UI, Clean 
+Architecture with MVVM, and includes a full hybrid monetization engine with Google 
+Play Billing v7 and AdMob rewarded ads."
+
+--------------------------------------------------------------------------------
+2. TECH STACK & "WHY WE USED IT" (VIVA QUESTIONS & ANSWERS)
+--------------------------------------------------------------------------------
+
+Q: Why Kotlin 2.0+?
+A: Official Android language. Guarantees null safety (eliminates NullPointerException), 
+   supports Coroutines for asynchronous work, and reduces boilerplate by ~40% vs Java.
+
+Q: Why Jetpack Compose + Material 3?
+A: Modern declarative UI toolkit. Replaces old XML layouts. Instead of finding views 
+   (findViewById), the UI automatically re-renders when data changes (Recomposition). 
+   Supports dark-theme first and 60fps animations.
+
+Q: Why Clean Architecture + MVVM?
+A: Separates concerns into 3 layers: Presentation (Compose), Domain (Business rules), 
+   and Data (Room). The ViewModel survives screen rotations and configuration changes, 
+   preventing data loss.
+
+Q: Why Room Database (SQLite)?
+A: Google's official ORM library over SQLite. Checks SQL queries at compile-time 
+   (preventing crashes at runtime) and returns reactive Kotlin Flow directly to 
+   the UI.
+
+Q: Why Jetpack DataStore Preferences?
+A: Modern replacement for SharedPreferences. Runs asynchronously using Coroutines and 
+   Dispatchers.IO, preventing UI freezes (ANRs) on the main thread.
+
+Q: Why Dagger Hilt?
+A: Google's official Dependency Injection framework. Automatically creates and injects 
+   DAOs and repositories into ViewModels using @Inject.
+
+Q: Why a Foreground Service for the Timer?
+A: Standard background threads get killed by Android Doze Mode when the screen turns off. 
+   A Foreground Service with a persistent notification ensures the Pomodoro countdown 
+   keeps running accurately.
+
+Q: Why WorkManager for Streak Reminders?
+A: Schedules guaranteed daily streak reminder notifications in the evening even if the 
+   app was swiped away or the phone was rebooted.
+
+Q: Why Google Play Billing v7+?
+A: Implements an ethical freemium business model (Free: up to 3 habits; Pro: unlimited 
+   habits, 365-day heatmaps, CSV/JSON export) with subscription and one-time unlock.
+
+Q: Why Google AdMob?
+A: Shows non-intrusive banner ads and rewarded video ads ("Watch an ad to unlock full 
+   analytics for 24 hours") for free users, automatically hidden for Pro subscribers.
+
+Q: Why Play In-App Review API?
+A: Prompts the user for a 5-star rating right inside the app after their 5th completed 
+   session, boosting organic Play Store ratings.
+
+--------------------------------------------------------------------------------
+3. END-TO-END FLOW (HOW THE USER EXPERIENCES THE APP)
+--------------------------------------------------------------------------------
+
+1. First Launch (Onboarding Carousel):
+   - 3-screen carousel introduces the offline value proposition.
+   - User picks their #1 goal (e.g. Deep Work Coding, Workout, Read 30 Mins).
+   - Creates the initial habit and takes them directly to the Dashboard.
+
+2. Dashboard (Habits & Streaks):
+   - Displays active habits with category tags and current streaks (e.g. 5 days).
+   - Tapping checkmark plays a sound tone, triggers haptic vibration, marks today done, 
+     and recalculates the streak.
+   - If free user reaches 3 habits, opening the dialog shows the Pro Paywall.
+
+3. Timer Screen (Pomodoro Engine):
+   - Offers 4 modes: Pomodoro (25m), Short Break (5m), Long Break (15m), Deep (50m).
+   - Smooth animated circular progress bar and large countdown readout.
+   - Promotes to an Android Foreground Service with an ongoing notification.
+   - On completion, plays a celebration chime and logs the session to Room.
+
+4. Analytics Screen (Heatmap Grid):
+   - GitHub-style 52-week green contribution matrix.
+   - Each square represents a day; darker green means more completed habits/focus.
+   - Free users see 7 days. Can unlock 365 days with Pro or by watching a Rewarded Ad.
+
+5. Settings Screen (Control & Data Freedom):
+   - Customize focus and break durations with sliders.
+   - Toggles for sound, vibration, and evening streak notifications.
+   - One-tap CSV or JSON export shared via Android Share Sheet (Drive, Gmail, etc.).
+
+--------------------------------------------------------------------------------
+4. KEY CODE EXPLANATIONS FOR THE EXAMINER
+--------------------------------------------------------------------------------
+
+A. Room Entity (HabitEntity.kt):
+   @Entity(tableName = "habits")
+   data class HabitEntity(
+       @PrimaryKey(autoGenerate = true) val id: Long = 0,
+       val name: String,
+       val category: String,
+       val currentStreak: Int = 0,
+       val longestStreak: Int = 0,
+       val isArchived: Boolean = false
+   )
+   -> Explanation: @Entity defines the SQL table schema. id is auto-generated. 
+      It tracks currentStreak and longestStreak.
+
+B. Reactive Database Queries (HabitDao.kt):
+   @Query("SELECT * FROM habits WHERE isArchived = 0 ORDER BY createdAt DESC")
+   fun getAllActiveHabits(): Flow<List<HabitEntity>>
+   -> Explanation: The DAO returns a reactive Kotlin Flow. Whenever any habit is 
+      inserted, toggled, or deleted, Room automatically pushes the updated list 
+      to the UI.
+
+C. Consecutive Streak Algorithm (HabitRepositoryImpl.kt):
+   - Fetches all dates logged for this habit.
+   - Checks if done today or yesterday (grace period so streak isn't lost in the morning).
+   - A while-loop walks backwards day-by-day. As soon as a day is missing, it breaks 
+     and writes the consecutive count to the database.
+
+D. Foreground Service Timer (TimerService.kt):
+   - Uses startForeground() with a notification.
+   - Runs a non-blocking coroutine loop on the Main dispatcher updating remaining seconds.
+   - Notification updates every second so user can track time from the lock screen.
+
+--------------------------------------------------------------------------------
+5. TOP 15 VIVA QUESTIONS & DIRECT ANSWERS
+--------------------------------------------------------------------------------
+
+Q1: What is MVVM and why did you use it?
+A1: Model-View-ViewModel. View handles UI, ViewModel handles business logic and survives 
+    screen rotation, Model handles raw data. Prevents activity recreation crashes.
+
+Q2: What is Recomposition in Jetpack Compose?
+A2: When state changes (like timer seconds), Compose re-executes only the composable 
+    functions that read that state. It skips unchanged elements, making UI fast.
+
+Q3: Difference between Kotlin Coroutines and standard Java Threads?
+A3: Threads are heavy OS resources (~1MB memory each). Coroutines are lightweight 
+    user-space threads. Thousands of coroutines can run on a single thread pool. 
+    They use suspend functions to pause/resume without blocking.
+
+Q4: What is StateFlow vs SharedFlow?
+A4: StateFlow holds and emits the current state to collectors (for UI state). 
+    SharedFlow emits one-time events without state (for Toasts, navigation).
+
+Q5: Why use Room instead of raw SQLite?
+A5: Room provides compile-time verification of SQL queries (prevents runtime crashes), 
+    eliminates manual cursor parsing, and supports Kotlin Flow reactivity.
+
+Q6: Why is DataStore better than SharedPreferences?
+A6: SharedPreferences uses synchronous disk I/O on the main thread, causing ANR freezes. 
+    DataStore is fully asynchronous and runs safely on Dispatchers.IO.
+
+Q7: What is Dependency Injection and why use Hilt?
+A7: DI passes dependencies from outside rather than creating them inside. Hilt automates 
+    lifecycle-aware dependency injection with the @Inject annotation.
+
+Q8: Difference between a Foreground Service and WorkManager?
+A8: Foreground Service is for active, immediate user tasks (like the countdown timer) 
+    with a notification. WorkManager is for deferred, guaranteed background tasks 
+    (like daily streak reminders) that survive app closures and phone reboots.
+
+Q9: How does Google Play Billing v7 prevent fraud / double charges?
+A9: After purchase, the app must call billingClient.acknowledgePurchase() within 3 days. 
+    Otherwise, Google Play automatically refunds the money and revokes access.
+
+Q10: How does the Git-Style Heatmap calculate color intensity?
+A10: Daily habit completions and focus minutes are scored. The score is normalized 
+     against the cycle's maximum activity to generate a 0.0f to 1.0f intensity, 
+     which maps to 5 green levels (HeatmapLevel0 to HeatmapLevel4).
+
+Q11: How is the app strictly offline-first with zero server costs?
+A11: All data is stored in the local SQLite database via Room and DataStore. No cloud 
+     servers are used, giving users complete privacy and the developer $0 server bills.
+
+Q12: What does ProGuard / R8 do?
+A12: Code shrinking, resource shrinking, function inlining, and class/method obfuscation 
+     (renaming to a, b, c) to reduce APK size and prevent reverse engineering.
+
+Q13: How does the In-App Review API work?
+A13: Tracks completed sessions in DataStore. On the 5th session, calls Google's 
+     requestReviewFlow() to show the rating sheet inside the app without leaving.
+
+Q14: How does data export work without a server?
+A14: Tables are serialized to CSV or JSON (via Gson), saved in app cache, and shared 
+     via Android's secure FileProvider and the native Intent.ACTION_SEND Share Sheet.
+
+Q15: How did you test the project?
+A15: Automated unit tests in DateUtilsTest.kt using JUnit 4 testing date format regexes, 
+     seconds-to-timer conversion, and past day array generation. All tests passed.
+
+================================================================================
+END OF GUIDE - FOCUSFORGE HABIT & DEEP WORK ENGINE
+================================================================================
